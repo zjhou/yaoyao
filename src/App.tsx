@@ -62,7 +62,7 @@ ParticleSystem.prototype.run = function(p5) {
 function App() {
   const [count, setCount] = useState(0)
   const setup = (p5: p5Types, canvasParentRef: Element) => {
-    p5.createCanvas(innerWidth - 40, 400);
+    p5.createCanvas(innerWidth - 40, innerHeight - 20);
     system = new ParticleSystem(p5.createVector(p5.width / 2, 50));
   };
   const draw = (p5: p5Types) => {
