@@ -7,6 +7,17 @@ import './App.css'
 let x = 50;
 const y = 50;
 
+function heart(x, y, size, p5, opacity) {
+  p5.fill(251, 93, 99, opacity);
+  p5.stroke(251, 192, 93, opacity);
+  p5.strokeWeight(2);
+  p5.beginShape();
+  p5.vertex(x, y);
+  p5.bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+  p5.bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+  p5.endShape(p5.CLOSE);
+}
+
 let system;
 // A simple Particle class
 let Particle = function(position, p5) {
@@ -30,10 +41,11 @@ Particle.prototype.update = function(){
 
 // Method to display
 Particle.prototype.display = function(p5) {
-  p5.stroke(251, 192, 93, this.lifespan);
-  p5.strokeWeight(2);
-  p5.fill(251, 93, 99, this.lifespan);
-  p5.ellipse(this.position.x, this.position.y, 12, 12);
+  heart(this.position.x, this.position.y, 12, p5, this.lifespan);
+  // p5.stroke(251, 192, 93, this.lifespan);
+  // p5.strokeWeight(2);
+  // p5.fill(251, 93, 99, this.lifespan);
+  // p5.ellipse(this.position.x, this.position.y, 12, 12);
 };
 
 // Is the particle still useful?
