@@ -41,8 +41,10 @@
 }
 
 .coming {
-  color: rgb(251, 93, 99, .9);
-  font-weight: bolder;
-  position: relative;
-  top: -2em;
+    color: rgb(251, 93, 99, .9);
+    font-weight: bolder;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
 }
