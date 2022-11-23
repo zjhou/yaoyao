@@ -1,10 +1,9 @@
 import type p5Types from "p5";
 import { Particle } from "./Particle";
 
-
 export class ParticleSystem {
     private particles: Particle[];
-    private origin: any;
+    origin: any;
     private p5: p5Types;
 
     constructor(position: any, p5: p5Types) {
@@ -13,8 +12,8 @@ export class ParticleSystem {
         this.particles = [];
     }
 
-    addParticle() {
-        this.particles.push(new Particle(this.origin, this.p5));
+    addParticle(pos?: p5Types.Vector, immortal?: boolean) {
+        this.particles.push(new Particle(pos || this.origin, this.p5, immortal));
     }
 
     reposition(position: any) {

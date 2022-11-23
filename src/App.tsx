@@ -1,5 +1,5 @@
 import Sketch from "react-p5";
-import p5Types from "p5";
+import type p5Types from "p5";
 import {useEffect, useRef} from "react";
 import { ParticleSystem } from "./PS/ParticleSystem";
 
@@ -29,6 +29,13 @@ function App() {
 
   useEffect(() => {
     window.addEventListener("resize", onWindowResized);
+    const p5 = p5Ref.current;
+
+    if (p5) {
+      system.addParticle(p5.createVector(system.origin.x - 12, system.origin.y - 20), true);
+      system.addParticle(p5.createVector(system.origin.x, system.origin.y - 20), true);
+    }
+
     return () => window.removeEventListener("resize", onWindowResized);
   }, [])
   return (
