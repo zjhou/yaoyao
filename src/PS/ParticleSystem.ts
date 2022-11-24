@@ -1,6 +1,6 @@
 import type p5Types from "p5";
 import { timer } from "../utils/timer";
-import { Particle } from "./Particle";
+import {Particle, ParticleOption} from "./Particle";
 
 export class ParticleSystem {
     private particles: Particle[];
@@ -13,8 +13,39 @@ export class ParticleSystem {
         this.particles = [];
     }
 
-    addParticle(pos?: p5Types.Vector, immortal?: boolean) {
-        this.particles.push(new Particle(pos || this.origin, this.p5, immortal));
+    addParticle(pos: p5Types.Vector, option: ParticleOption) {
+        this.particles.push(new Particle(this.p5, pos, option));
+    }
+
+    addHeartPair(x: number = this.origin.x, y = this.p5.height - 30) {
+        const { p5 } = this;
+        this.addParticle(p5.createVector(x - 12, y), {
+            immortal: true,
+            float: true,
+            size: 12,
+        });
+        this.addParticle(p5.createVector(x, y), {
+            immortal: true,
+            float: true,
+            size: 12,
+        });
+    }
+
+    addHeartParticles(pos?: p5Types.Vector) {
+        const start = 0;
+        const end = 2 * 3.14;
+        const count = 30;
+        const step = (end - start) / count;
+
+        for(let i = start; i <= end; i+= step) {
+            const x = 2 * Math.pow(Math.sin(i), 3);
+            const y = - 2 * ((13 * Math.cos(i) - 5 * Math.cos(2 * i) - 2 * Math.cos(3 * i) - Math.cos(4 * i)) / 16)
+            this.addParticle(this.p5.createVector(x * 20 + 50 + (pos?.x || 0), y * 20 + 50 + (pos?.y || 0)), {
+                immortal: true,
+                size: 7,
+                beat: true
+            });
+        }
     }
 
     reposition(position: any) {
@@ -25,7 +56,7 @@ export class ParticleSystem {
         const { timeStr } = timer();
         const { p5 } = this;
         p5.text(timeStr, x, y);
-        p5.text('天', x + 120, y);
+        p5.text('天', x + 130, y);
     }
 
     run() {

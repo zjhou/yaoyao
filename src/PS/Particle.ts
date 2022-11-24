@@ -1,5 +1,12 @@
 import type p5Types from "p5";
 
+export interface ParticleOption {
+   immortal?: boolean,
+   size?: number,
+   float?: boolean,
+   beat?: boolean,
+}
+
 export class Particle {
     private lifespan: number;
     private age: number;
@@ -8,14 +15,33 @@ export class Particle {
     private acceleration: any;
     private position: any;
     private immortal: boolean;
+    private size: number;
+    private beat: boolean;
+    private float: boolean;
+    private opacity: number;
 
-    constructor(position: any, p5Inst: p5Types, immortal: boolean = false) {
+    constructor(
+      p5Inst: p5Types,
+      position: p5Types.Vector,
+      option: ParticleOption
+    ) {
         this.p5 = p5Inst;
+        const {
+            immortal = false,
+            size = 12,
+            beat = false,
+            float = false,
+        } = option;
+
+        this.position = position;
         this.immortal = immortal;
-        this.acceleration = p5Inst.createVector(0, 0.05);
+        this.size = size;
+        this.beat = beat;
+        this.float = float;
         this.velocity = p5Inst.createVector(p5Inst.random(-1, 1), p5Inst.random(-1, 0));
-        this.position = position.copy();
-        this.lifespan = 255;
+        this.acceleration = p5Inst.createVector(0, 0.05);
+        this.lifespan = 200;
+        this.opacity = 200;
         this.age = 0;
     }
 
@@ -23,22 +49,28 @@ export class Particle {
         this.velocity.add(this.acceleration);
         this.age += 1 / 60;
 
-        if (this.immortal) {
+        if (this.float) {
             this.position.add(
-                this.p5.sin(this.age) / this.p5.random(6, 10),
-                this.p5.cos(this.age) / this.p5.random(8, 10),
+              this.p5.sin(this.age) / 20,
+              this.p5.cos(this.age) / 20
             );
-        } else {
-            this.position.add(this.velocity);
+        }
+
+        if (!this.immortal) {
             this.lifespan -= 2;
+        }
+
+        if (this.beat) {
+            this.size += this.p5.sin(this.age) / 15
+            this.opacity += this.p5.sin(this.age)* 10 + 10;
         }
     };
 
     display(size:number) {
-        const { p5, position } = this;
+        const { p5, position, opacity} = this;
         const { x, y } = position;
-        p5.fill(251, 93, 99, this.lifespan);
-        p5.stroke(251, 192, 93, this.lifespan);
+        p5.fill(251, 93, 99, opacity);
+        p5.stroke(251, 192, 93, opacity);
         p5.strokeWeight(2);
         p5.beginShape();
         p5.vertex(x, y);
@@ -49,7 +81,7 @@ export class Particle {
 
     run() {
         this.update();
-        this.display(12);
+        this.display(this.size);
     }
 
     isDead() {

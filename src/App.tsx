@@ -17,9 +17,9 @@ function App() {
   };
   const draw = (p5: p5Types) => {
     p5.background(251, 192, 93);
-    system.addParticle();
+    // system.addParticle();
     system.run();
-    system.showTimer(system.origin.x - 65, system.origin.y + 60)
+    system.showTimer(system.origin.x - 65, p5.height - 20)
   };
   const onWindowResized = () => {
     if (p5Ref.current) {
@@ -34,17 +34,15 @@ function App() {
     const p5 = p5Ref.current;
 
     if (p5) {
-      system.addParticle(p5.createVector(system.origin.x - 12, system.origin.y - 20), true);
-      system.addParticle(p5.createVector(system.origin.x, system.origin.y - 20), true);
+      // system.addHeartParticles(p5.createVector(100, p5.height / 2 - 100));
+      // system.addHeartParticles(p5.createVector(30, p5.height / 2 - 100));
+      system.addHeartPair(system.origin.x - 80);
     }
 
     return () => window.removeEventListener("resize", onWindowResized);
   }, [])
   return (
-    <>
-      <Sketch setup={setup} draw={draw} />
-      <div className="coming">COMING SOON...</div>
-    </>
+    <Sketch setup={setup} draw={draw} />
   );
 }
 
