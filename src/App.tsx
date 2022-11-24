@@ -1,5 +1,6 @@
 import Sketch from "react-p5";
 import type p5Types from "p5";
+import { timer } from './utils/timer'
 import {useEffect, useRef} from "react";
 import { ParticleSystem } from "./PS/ParticleSystem";
 
@@ -18,6 +19,7 @@ function App() {
     p5.background(251, 192, 93);
     system.addParticle();
     system.run();
+    system.showTimer(system.origin.x - 65, system.origin.y + 60)
   };
   const onWindowResized = () => {
     if (p5Ref.current) {

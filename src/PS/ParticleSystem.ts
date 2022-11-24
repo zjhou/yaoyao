@@ -1,4 +1,5 @@
 import type p5Types from "p5";
+import { timer } from "../utils/timer";
 import { Particle } from "./Particle";
 
 export class ParticleSystem {
@@ -18,6 +19,13 @@ export class ParticleSystem {
 
     reposition(position: any) {
         this.origin = position.copy();
+    }
+
+    showTimer(x: number, y: number) {
+        const { timeStr } = timer();
+        const { p5 } = this;
+        p5.text(timeStr, x, y);
+        p5.text('天', x + 120, y);
     }
 
     run() {
