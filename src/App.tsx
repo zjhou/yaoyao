@@ -19,7 +19,7 @@ function App() {
     p5.background(251, 192, 93);
     // system.addParticle();
     system.run();
-    system.showTimer(system.origin.x - 65, p5.height - 20)
+    system.showTimer(system.origin.x - 65, p5.height - 60)
   };
   const onWindowResized = () => {
     if (p5Ref.current) {

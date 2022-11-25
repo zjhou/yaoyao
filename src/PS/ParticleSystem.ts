@@ -17,7 +17,7 @@ export class ParticleSystem {
         this.particles.push(new Particle(this.p5, pos, option));
     }
 
-    addHeartPair(x: number = this.origin.x, y = this.p5.height - 30) {
+    addHeartPair(x: number = this.origin.x, y = this.p5.height - 70) {
         const { p5 } = this;
         this.addParticle(p5.createVector(x - 12, y), {
             immortal: true,
