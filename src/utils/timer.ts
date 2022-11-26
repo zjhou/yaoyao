@@ -7,7 +7,7 @@ export const timer = () => {
     const days = Math.floor(diff / dayInMs);
     return {
         days,
-        timeStr: `${diff / dayInMs}`,
+        timeStr: `${(diff / dayInMs).toFixed(10)}`,
     }
 }
 

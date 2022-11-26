@@ -17,7 +17,7 @@ export class ParticleSystem {
         this.particles.push(new Particle(this.p5, pos, option));
     }
 
-    addHeartPair(x: number = this.origin.x, y = this.p5.height - 70) {
+    addHeartPair(x: number = this.origin.x, y = this.p5.height - 90) {
         const { p5 } = this;
         this.addParticle(p5.createVector(x - 12, y), {
             immortal: true,
@@ -60,13 +60,13 @@ export class ParticleSystem {
     }
 
     showTimer(x: number, y: number) {
-        const { timeStr, days } = timer();
+        const { timeStr } = timer();
         const { p5 } = this;
-        const tw = p5.textWidth(days + '');
+        const tw = p5.textWidth(timeStr);
         p5.textFont('monospace');
         p5.fill(251, 93, 99);
         p5.text(timeStr, x, y);
-        p5.text('天', x + tw + 95, y);
+        p5.text('天', x + tw + 5, y);
     }
 
     run() {
