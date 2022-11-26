@@ -62,11 +62,9 @@ export class ParticleSystem {
     showTimer(x: number, y: number) {
         const { timeStr } = timer();
         const { p5 } = this;
-        const tw = p5.textWidth(timeStr);
         p5.textFont('monospace');
         p5.fill(251, 93, 99);
-        p5.text(timeStr, x, y);
-        p5.text('天', x + tw + 5, y);
+        p5.text(timeStr + ' 天', x, y);
     }
 
     run() {
