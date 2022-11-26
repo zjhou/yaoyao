@@ -10,3 +10,7 @@ export const timer = () => {
         timeStr: `${diff / dayInMs}`,
     }
 }
+
+export const sec = () => {
+    return new Date().getTime() / 1000;
+}

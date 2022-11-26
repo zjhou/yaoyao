@@ -1,10 +1,15 @@
 import type p5Types from "p5";
+import breath from "../utils/breath";
+import {sec} from "../utils/timer";
 
 export interface ParticleOption {
-   immortal?: boolean,
-   size?: number,
-   float?: boolean,
-   beat?: boolean,
+    immortal?: boolean,
+    size?: number,
+    index?: number,
+    float?: boolean,
+    beat?: boolean,
+    randomFloat?: boolean,
+    originPos?: p5Types.Vector,
 }
 
 export class Particle {
@@ -19,6 +24,10 @@ export class Particle {
     private beat: boolean;
     private float: boolean;
     private opacity: number;
+    private index: number | undefined;
+    private sec: number;
+    private originPos: p5Types.Vector;
+    private randomFloat: boolean;
 
     constructor(
       p5Inst: p5Types,
@@ -26,11 +35,15 @@ export class Particle {
       option: ParticleOption
     ) {
         this.p5 = p5Inst;
+
         const {
+            index,
             immortal = false,
             size = 12,
             beat = false,
             float = false,
+            randomFloat = false,
+            originPos = p5Inst.createVector(0, 0),
         } = option;
 
         this.position = position;
@@ -42,9 +55,28 @@ export class Particle {
         this.acceleration = p5Inst.createVector(0, 0.05);
         this.lifespan = 200;
         this.opacity = 200;
+        this.originPos = originPos;
+        this.index = index;
+        this.sec = sec();
+        this.randomFloat = randomFloat;
         this.age = 0;
     }
 
+    getHeartPos(scale: number) {
+        const i = this.index || 0;
+        const pos = this.originPos;
+        const x = 2 * Math.pow(Math.sin(i), 3);
+        const y = - 2 * ((13 * Math.cos(i) - 5 * Math.cos(2 * i) - 2 * Math.cos(3 * i) - Math.cos(4 * i)) / 16)
+
+        const scaledX = x * scale + 50 + (pos?.x || 0);
+        const scaledY = y * scale + 50 + (pos?.y || 0);
+
+        return this.p5.createVector(scaledX, scaledY)
+    };
+
+    getSecPass() {
+        return sec() - this.sec;
+    }
     update() {
         this.velocity.add(this.acceleration);
         this.age += 1 / 60;
@@ -61,9 +93,28 @@ export class Particle {
         }
 
         if (this.beat) {
-            this.size += this.p5.sin(this.age) / 15
-            this.opacity += this.p5.sin(this.age)* 10 + 10;
+            this.position = this.getHeartPos(
+              breath(this.getSecPass(), 50, 65)
+            );
+            this.size = breath(
+              this.getSecPass(), 12, 10
+            );
+            this.opacity = breath(
+              this.getSecPass(),
+              255,
+              90
+            );
         }
+
+        if (this.randomFloat) {
+            this.position.add(
+              this.p5.sin(this.age * this.p5.random(10, 13)) * 10,
+              this.p5.cos(this.age * this.p5.random(10, 13)) * 10,
+            );
+            this.size = this.p5.random(7, 10);
+            this.opacity = this.p5.random(100, 200);
+        }
+
     };
 
     display(size:number) {

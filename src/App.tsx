@@ -18,8 +18,8 @@ function App() {
   const draw = (p5: p5Types) => {
     p5.background(251, 192, 93);
     // system.addParticle();
-    system.run();
     system.showTimer(system.origin.x - 65, p5.height - 60)
+    system.run();
   };
   const onWindowResized = () => {
     if (p5Ref.current) {
@@ -34,8 +34,9 @@ function App() {
     const p5 = p5Ref.current;
 
     if (p5) {
-      // system.addHeartParticles(p5.createVector(100, p5.height / 2 - 100));
-      // system.addHeartParticles(p5.createVector(30, p5.height / 2 - 100));
+      system.addHeartParticles(p5.createVector((p5.width - 115) / 2, p5.height / 2 - 100), 60);
+      system.addHeartParticles(p5.createVector((p5.width - 115) / 2, p5.height / 2 - 100), 50, true);
+
       system.addHeartPair(system.origin.x - 80);
     }
 

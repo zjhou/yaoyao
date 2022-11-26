@@ -31,19 +31,26 @@ export class ParticleSystem {
         });
     }
 
-    addHeartParticles(pos?: p5Types.Vector) {
+    addHeartParticles(pos?: p5Types.Vector, heartNum?: number, random?: boolean) {
         const start = 0;
         const end = 2 * 3.14;
-        const count = 30;
+        const count = heartNum || 60;
         const step = (end - start) / count;
 
         for(let i = start; i <= end; i+= step) {
             const x = 2 * Math.pow(Math.sin(i), 3);
             const y = - 2 * ((13 * Math.cos(i) - 5 * Math.cos(2 * i) - 2 * Math.cos(3 * i) - Math.cos(4 * i)) / 16)
-            this.addParticle(this.p5.createVector(x * 20 + 50 + (pos?.x || 0), y * 20 + 50 + (pos?.y || 0)), {
+
+            const scaledX = x * 50 + 50 + (pos?.x || 0);
+            const scaledY = y * 50 + 50 + (pos?.y || 0);
+
+            this.addParticle(this.p5.createVector(scaledX, scaledY), {
+                originPos: pos,
                 immortal: true,
-                size: 7,
-                beat: true
+                size: 10,
+                beat: true,
+                index: i,
+                randomFloat: random
             });
         }
     }
@@ -53,10 +60,13 @@ export class ParticleSystem {
     }
 
     showTimer(x: number, y: number) {
-        const { timeStr } = timer();
+        const { timeStr, days } = timer();
         const { p5 } = this;
+        const tw = p5.textWidth(days + '');
+        p5.textFont('monospace');
+        p5.fill(251, 93, 99);
         p5.text(timeStr, x, y);
-        p5.text('天', x + 130, y);
+        p5.text('天', x + tw + 95, y);
     }
 
     run() {
