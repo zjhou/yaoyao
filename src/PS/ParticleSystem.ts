@@ -3,8 +3,8 @@ import { timer } from "../utils/timer";
 import {Particle, ParticleOption} from "./Particle";
 
 export class ParticleSystem {
-    private particles: Particle[];
     origin: any;
+    private particles: Particle[];
     private p5: p5Types;
 
     constructor(position: any, p5: p5Types) {
