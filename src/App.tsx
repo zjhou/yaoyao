@@ -1,22 +1,25 @@
 import Sketch from "react-p5";
 import type p5Types from "p5";
-import { ParticleSystem } from "./particle_system";
+import { HeartSystem } from "./heart_system";
 import { useEffect, useRef } from "react";
 
 import './App.css'
 
 function App() {
-  let system: ParticleSystem;
+  let system: HeartSystem;
 
   const p5Ref = useRef<p5Types>();
+
   const setup = (p5: p5Types) => {
     p5Ref.current = p5;
     p5.createCanvas(innerWidth, innerHeight);
-    system = new ParticleSystem(p5.createVector(p5.width / 2, p5.height / 2 - 20), p5);
+    system = new HeartSystem(p5.createVector((p5.width - 100) / 2, p5.height / 2 - 200), { p5 });
+    system.display();
   };
 
   const draw = (p5: p5Types) => {
     p5.background(251, 192, 93);
+    system.showTimer(system.position.x + 15, p5.height - 80);
     system.run();
   };
 
@@ -32,6 +35,7 @@ function App() {
     const p5 = p5Ref.current;
 
     if (p5) {
+      system.showHeartPair(system.position.x, p5.height - 90);
     }
 
     return () => window.removeEventListener("resize", onWindowResized);
