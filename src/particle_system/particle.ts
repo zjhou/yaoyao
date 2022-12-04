@@ -1,5 +1,7 @@
 import type p5Types from "p5";
 import { scale } from "../utils";
+import breath from "../utils/breath";
+import {sec} from "../utils/timer";
 
 interface Particle {
   lifespan: number;
@@ -28,6 +30,7 @@ export type ParticleConfig = {
 
   immortal?: boolean,
   float?: boolean,
+  beat?: boolean,
 }
 
 const MAX_LIFE_SPAN = 60;
@@ -43,6 +46,8 @@ export class Heart implements Particle {
   float: boolean;
   p5: p5Types;
   private age: number;
+  private beat: boolean | undefined;
+  private birthSec: number;
 
   constructor(config: ParticleConfig) {
     const {
@@ -53,6 +58,7 @@ export class Heart implements Particle {
       float,
       position,
       size,
+      beat,
     } = config;
 
     const {
@@ -69,6 +75,8 @@ export class Heart implements Particle {
     this.float = float || false;
     this.p5 = p5;
     this.age = 0;
+    this.birthSec = sec();
+    this.beat = beat;
   }
 
   run() {
@@ -82,6 +90,10 @@ export class Heart implements Particle {
 
   scaleTo(size: number) {
     this.size = size;
+  }
+
+  getRealAge() {
+    return sec() - this.birthSec;
   }
 
   update() {
@@ -99,6 +111,10 @@ export class Heart implements Particle {
       );
     } else {
       this.position.add(this.velocity);
+    }
+
+    if (this.beat) {
+      this.size = breath(this.getRealAge(), MAX_SIZE - 3, MAX_SIZE);
     }
   }
 

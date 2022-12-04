@@ -71,12 +71,14 @@ export class ParticleSystem {
       p5,
       position: p5.createVector(x - 7, y + 2),
       immortal: true,
+      beat: true,
       float: true
     });
     this.addParticle({
       p5,
       position: p5.createVector(x, y),
       immortal: true,
+      beat: true,
       float: true,
     });
   }
