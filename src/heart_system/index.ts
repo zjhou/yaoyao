@@ -8,6 +8,7 @@ type HeartConfig = {
   count?: number;
   size?: number
 }
+
 export class HeartSystem {
   private readonly count: number;
   readonly ps: ParticleSystem[];
