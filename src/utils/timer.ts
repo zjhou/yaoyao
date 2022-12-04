@@ -8,7 +8,10 @@ const parseDate = (dateString: string) => {
             const dateData = dateString.slice(0, bound).split('-').map(Number);
             const timeData = dateString.slice(bound+1, -1).split(':').map(Number);
 
-            time = Date.UTC(dateData[0],dateData[1]-1,dateData[2],timeData[0],timeData[1],timeData[2]);
+            const [year, month, day] = dateData;
+            const [hour, min, sec] = timeData;
+
+            time = Date.UTC(year, month - 1, day, hour, min, sec);
         }
     }
     return time;
