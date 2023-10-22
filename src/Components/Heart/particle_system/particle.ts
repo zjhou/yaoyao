@@ -1,7 +1,7 @@
 import type p5Types from "p5";
-import { scale } from "../utils";
-import breath from "../utils/breath";
-import {sec} from "../utils/timer";
+import { scale } from "@/utils";
+import breath from "@/utils/breath";
+import {sec} from "@/utils/timer";
 
 interface Particle {
   lifespan: number;
@@ -31,10 +31,12 @@ export type ParticleConfig = {
   immortal?: boolean,
   float?: boolean,
   beat?: boolean,
+
+  img?: p5Types.Image;
 }
 
-const MAX_LIFE_SPAN = 60;
-const MAX_SIZE = 10;
+const MAX_LIFE_SPAN = 80;
+const MAX_SIZE = 12;
 
 export class Heart implements Particle {
   position: p5Types.Vector;
@@ -45,6 +47,7 @@ export class Heart implements Particle {
   immortal: boolean;
   float: boolean;
   p5: p5Types;
+  img?: p5Types.Image;
   private age: number;
   private beat: boolean | undefined;
   private birthSec: number;
@@ -58,6 +61,7 @@ export class Heart implements Particle {
       float,
       position,
       size,
+      img,
       beat,
     } = config;
 
@@ -76,6 +80,7 @@ export class Heart implements Particle {
     this.p5 = p5;
     this.age = 0;
     this.birthSec = sec();
+    this.img = img;
     this.beat = beat;
   }
 
@@ -119,10 +124,15 @@ export class Heart implements Particle {
   }
 
   display() {
-    const { p5, position, lifespan, immortal } = this;
+    const { p5, position, lifespan, immortal, img } = this;
     const { x, y } = position;
     const size = scale(lifespan, MAX_LIFE_SPAN, this.size || MAX_SIZE);
     const maxOpacity = immortal ? 255 : 200;
+    if (img && size > 0) {
+      p5.image(img, x, y, size * 5, size * 5)
+      return;
+    }
+
     p5.fill(251, 93, 99, scale(lifespan, MAX_LIFE_SPAN, maxOpacity));
     p5.stroke(251, 192, 93, lifespan);
     p5.strokeWeight(2);

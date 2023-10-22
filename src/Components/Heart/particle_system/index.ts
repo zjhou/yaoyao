@@ -1,8 +1,8 @@
 import type p5Types from "p5";
 import {Heart as Particle, ParticleConfig} from "./particle";
-import {sec} from "../utils/timer";
-import breath from "../utils/breath";
-import {createHeartPos} from "../utils";
+import {sec} from "@/utils/timer";
+import breath from "@/utils/breath";
+import {createHeartPos} from "@/utils";
 
 export class ParticleSystem {
   origin: p5Types.Vector;
@@ -13,12 +13,14 @@ export class ParticleSystem {
   private index: number;
   private refPos: p5Types.Vector;
   private size: number;
+  img?: p5Types.Image;
 
-  constructor(position: any, p5: p5Types, index: number, refPos: p5Types.Vector) {
+  constructor(position: any, p5: p5Types, index: number, refPos: p5Types.Vector, img?: p5Types.Image) {
     this.origin = position.copy();
     this.refPos = refPos;
     this.sec = sec();
     this.index = index;
+    this.img = img;
 
     const { x, y } = this.origin;
     this.p5 = p5;
@@ -53,6 +55,7 @@ export class ParticleSystem {
     this.particles.push(new Particle(Object.assign({}, {
       position: this.origin,
       p5: this.p5,
+      img: this.img,
     }, config)));
   }
 
@@ -86,6 +89,7 @@ export class ParticleSystem {
   run() {
     this.update();
     this.addParticle();
+
     for (let i = this.particles.length-1; i >= 0; i--) {
       let p = this.particles[i];
       p.run();
